@@ -84,47 +84,48 @@ private
 
   CHARGE_MAXIMUMS = {
     scharge: {
-      this_landlord: {
+      "LA": {
         general_needs: 55,
         supported_housing: 280,
       },
-      other_landlord: {
+      "PRP": {
         general_needs: 45,
         supported_housing: 165,
       },
     },
     pscharge: {
-      this_landlord: {
+      "LA": {
         general_needs: 30,
         supported_housing: 200,
       },
-      other_landlord: {
+      "PRP": {
         general_needs: 35,
         supported_housing: 75,
       },
     },
     supcharg: {
-      this_landlord: {
+      "LA": {
         general_needs: 40,
         supported_housing: 465,
       },
-      other_landlord: {
+      "PRP": {
         general_needs: 60,
         supported_housing: 120,
       },
     },
   }.freeze
 
-  LANDLORD_VALUES = { 1 => :this_landlord, 2 => :other_landlord }.freeze
+  LANDLORD_VALUES = { :LA => :this_landlord, :PRP => :other_landlord }.freeze
   NEEDSTYPE_VALUES = { 0 => :supported_housing, 1 => :general_needs }.freeze
 
   def validate_charges(record)
     %i[scharge pscharge supcharg].each do |charge|
-      maximum = CHARGE_MAXIMUMS.dig(charge, LANDLORD_VALUES[record.landlord], NEEDSTYPE_VALUES[record.needstype])
+      maximum = CHARGE_MAXIMUMS.dig(charge, record.landlord.to_sym, NEEDSTYPE_VALUES[record.needstype])
 
       if maximum.present? && record[charge].present? && !weekly_value_in_range(record, charge, 0, maximum)
-        record.errors.add charge, I18n.t("validations.financial.rent.#{charge}.#{LANDLORD_VALUES[record.landlord]}.#{NEEDSTYPE_VALUES[record.needstype]}")
+        record.errors.add charge, I18n.t("validations.financial.rent.#{charge}.#{LANDLORD_VALUES[record.landlord.to_sym]}.#{NEEDSTYPE_VALUES[record.needstype]}")
       end
+      # binding.pry
     end
   end
 

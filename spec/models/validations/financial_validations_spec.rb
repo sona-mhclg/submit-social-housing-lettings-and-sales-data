@@ -205,7 +205,7 @@ RSpec.describe Validations::FinancialValidations do
       context "when needstype is general needs" do
         before do
           record.needstype = 1
-          record.landlord = 1
+          record.owning_organisation.provider_type = "LA"
         end
 
         [{
@@ -302,7 +302,7 @@ RSpec.describe Validations::FinancialValidations do
       context "when needstype is supported housing" do
         before do
           record.needstype = 0
-          record.landlord = 1
+          record.owning_organisation.provider_type = "LA"
         end
 
         [{
@@ -401,7 +401,7 @@ RSpec.describe Validations::FinancialValidations do
       context "when needstype is general needs" do
         before do
           record.needstype = 1
-          record.landlord = 2
+          record.owning_organisation.provider_type = "PRP"
         end
 
         [{
@@ -498,7 +498,7 @@ RSpec.describe Validations::FinancialValidations do
       context "when needstype is supported housing" do
         before do
           record.needstype = 0
-          record.landlord = 2
+          record.owning_organisation.provider_type = "PRP"
         end
 
         [{
