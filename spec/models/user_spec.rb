@@ -93,6 +93,10 @@ RSpec.describe User, type: :model do
           data_coordinator: 2,
         })
       end
+
+      it "can filter case logs by user, year and status" do
+        expect(user.case_logs_filters).to eq(%i[status years user])
+      end
     end
 
     context "when the user is a Customer Support person" do
@@ -114,6 +118,10 @@ RSpec.describe User, type: :model do
           data_coordinator: 2,
           support: 99,
         })
+      end
+
+      it "can filter case logs by user, year, status and organisation" do
+        expect(user.case_logs_filters).to eq(%i[status years user organisation])
       end
     end
   end
