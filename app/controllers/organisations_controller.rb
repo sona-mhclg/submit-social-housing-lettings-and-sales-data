@@ -1,4 +1,6 @@
 class OrganisationsController < ApplicationController
+  include Pagy::Backend
+
   before_action :authenticate_user!, except: [:index]
   before_action :find_resource, except: [:index]
   before_action :authenticate_scope!
@@ -7,6 +9,7 @@ class OrganisationsController < ApplicationController
     unless current_user.support?
       redirect_to user_path(current_user)
     end
+    @pagy, @organisations = pagy(Organisation.all)
   end
 
   def show
