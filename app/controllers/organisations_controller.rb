@@ -43,6 +43,12 @@ class OrganisationsController < ApplicationController
     end
   end
 
+  def logs
+    unless current_user.support?
+      redirect_to "/logs"
+    end
+  end
+
 private
 
   def org_params
